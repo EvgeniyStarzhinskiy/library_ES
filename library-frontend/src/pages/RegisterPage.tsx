@@ -11,7 +11,7 @@ const RegisterPage: React.FC = () => {
 
   const onFinish = async (values: { email: string; password: string; displayName: string }) => {
     try {
-      await register(values.email, values.password, values.displayName);
+      await register(values.email, values.password);
       message.success('Регистрация успешна. Проверьте почту для подтверждения.');
       navigate('/login');
     } catch (err: any) {

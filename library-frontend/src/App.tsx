@@ -16,12 +16,12 @@ import ProfilePage from './pages/ProfilePage';
 import FavoritesPage from './pages/FavoritesPage';
 import DonationsPage from './pages/DonationsPage';
 import BrowsePage from './pages/BrowsePage';
+import { AdminCategoriesPage } from './pages/admin/AdminCategoriesPage';
 
 import { Spin } from 'antd';
 
 const queryClient = new QueryClient();
 
-// Компонент-обёртка для защиты админских маршрутов
 const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user, loading } = useAuth();
   
@@ -41,13 +41,11 @@ function App() {
               <Route index element={<HomePage />} />
               <Route path="/search" element={<SearchResultsPage />} />
               <Route path="/admin/categories" element={<AdminRoute><CategoryManager /></AdminRoute>} />
+              <Route path="/admin/categories/v2" element={<AdminRoute><AdminCategoriesPage /></AdminRoute>} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/profile/favorites" element={<FavoritesPage />} />
               <Route path="/profile/donations" element={<DonationsPage />} />
               <Route path="/browse" element={<BrowsePage />} />
-
-
-
               <Route path="/category/:slug" element={<CategoryPage />} />
               <Route path="/documents/:id" element={<DocumentPage />} />
               <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />

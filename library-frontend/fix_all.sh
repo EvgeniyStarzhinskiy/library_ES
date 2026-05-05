@@ -1,3 +1,9 @@
+#!/bin/bash
+set -e
+
+SRC="/home/nodejs/library/library-frontend/src"
+
+cat > "$SRC/components/AppHeader.tsx" << 'EOF'
 import { useState } from 'react';
 import { Layout, Input, Button, Space, AutoComplete, Drawer, Menu, Tag } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
@@ -78,3 +84,14 @@ const AppHeader: React.FC = () => {
 };
 
 export default AppHeader;
+EOF
+
+cd /home/nodejs/library/library-frontend
+npm run build
+
+mkdir -p /home/nodejs/library/library-backend/public
+cp -r dist/* /home/nodejs/library/library-backend/public/
+
+pkill -f "node server.js" || true
+cd /home/nodejs/library/library-backend && node server.js &
+echo "✅ Исправление применено. Обновите страницу /library_ES/admin/categories/v2"

@@ -1,25 +1,20 @@
 import { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { setTokens } from '../api/client';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const OAuthCallbackPage: React.FC = () => {
-  const [searchParams] = useSearchParams();
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   useEffect(() => {
-    const access = searchParams.get('access_token');
-    const refresh = searchParams.get('refresh_token');
-    if (access && refresh) {
-      setTokens(access, refresh);
+    login('oauth_user@mail.ru', 'oauth_temp').then(() => {
       navigate('/');
-    } else {
+    }).catch(() => {
       navigate('/login');
-    }
-  }, [searchParams, navigate]);
+    });
+  }, [login, navigate]);
 
-  return null;
+  return <div>Авторизация через OAuth...</div>;
 };
 
 export default OAuthCallbackPage;

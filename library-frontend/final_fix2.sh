@@ -1,3 +1,11 @@
+#!/bin/bash
+set -e
+
+# Путь к исходникам
+SRC="/home/nodejs/library/library-frontend/src"
+
+# === 1. Исправляем AuthContext – убираем неиспользуемый параметр ===
+cat > "$SRC/context/AuthContext.tsx" << 'EOF'
 import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import apiClient, { setTokens, clearTokens } from '../api/client';
@@ -63,3 +71,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
+EOF
+
+# === 2. Правим RegisterPage – вызов register только с двумя аргументами ===
+# Заменяем строку вызова register(...) на вызов без displayName
+sed -i "s/await register(values\.email, values\.password, values\.displayName)/await register(values.email, values.password)/g" \
+  "$SRC/pages/RegisterPage.tsx"
+
+echo "✅ Финальные правки применены. Запустите npm run build"
